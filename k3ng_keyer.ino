@@ -535,12 +535,12 @@ New fetures in this stable release:
   #include <goertzel.h>
 #endif
 
-//#if defined(FEATURE_ETHERNET)
+#if defined(FEATURE_ETHERNET)
   #include <Ethernet.h>               // if this is not included, compilation fails even though all ethernet code is #ifdef'ed out
   #if defined(FEATURE_INTERNET_LINK)
     #include <EthernetUdp.h>
   #endif //FEATURE_INTERNET_LINK
-//#endif //FEATURE_ETHERNET
+#endif //FEATURE_ETHERNET
 
 
 #if defined(FEATURE_USB_KEYBOARD) || defined(FEATURE_USB_MOUSE)  // note_usb_uncomment_lines
@@ -10504,7 +10504,7 @@ byte play_memory(byte memory_number)
       
 
   }
-
+  return 0;
 }
 #endif
 

@@ -9,6 +9,7 @@ byte pot_value_wpm(void);
 byte pot_wpm_high_value;
 byte last_pot_wpm_read;
 extern int pot_full_scale_reading;
+extern byte pot_wpm_low_value;
 
 
 #else // !FEATURE_POTENTIOMETER
@@ -17,7 +18,6 @@ extern int pot_full_scale_reading;
 #define pot_value_wpm()
 #endif // !FEATURE_POTENTIOMETER
 
-extern byte pot_wpm_low_value; // TODO:  Fix this noise.
 
 
 #endif // ROTARY_ENCODER_H

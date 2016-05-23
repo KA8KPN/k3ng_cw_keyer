@@ -11052,7 +11052,9 @@ void initialize_keyer_state(){
   key_tx = 1;
   configuration.wpm = initial_speed_wpm;
 
+  #ifdef FEATURE_POTENTIOMETER
   pot_wpm_low_value = initial_pot_wpm_low_value;
+  #endif // FEATURE_POTENTIOMETER
   
   configuration.hz_sidetone = initial_sidetone_freq;
   configuration.memory_repeat_time = default_memory_repeat_time;

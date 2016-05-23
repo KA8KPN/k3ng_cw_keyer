@@ -17,6 +17,7 @@
 void speed_set(int wpm_set);  // TODO -- put this in a header file
 
 int pot_full_scale_reading = default_pot_full_scale_reading;
+byte pot_wpm_low_value;
 
 //--------------------------------------------------------------------- 
 void initialize_potentiometer(){
@@ -71,8 +72,5 @@ byte pot_value_wpm()
 
 //-------------------------------------------------------------------------------------------------------
 
-#else // !FEATURE_POTENTIOMETER TODO:  Fix this noise
-#include <Arduino.h> // TODO:  Fix this noise
-#endif // !FEATURE_POTENTIOMETER
-byte pot_wpm_low_value; // TODO:  Fix this noise
+#endif // FEATURE_POTENTIOMETER
 

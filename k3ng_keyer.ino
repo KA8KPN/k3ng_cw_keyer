@@ -423,6 +423,8 @@ New fetures in this stable release:
 #include <stdio.h>
 #include "keyer_hardware.h"
 
+#include "rotary_encoder.h"
+#include "potentiometer.h"
 
 #ifndef HARDWARE_ARDUINO_DUE
   #include <avr/pgmspace.h>
@@ -549,38 +551,8 @@ New fetures in this stable release:
   //#include <Usb.h>      // the USB Library can be downloaded at https://github.com/felis/USB_Host_Shield_2.0
 #endif
 
-
-
-// Variables and stuff
-struct config_t {
-  unsigned int wpm;
-  byte paddle_mode;
-  byte keyer_mode;
-  byte sidetone_mode;
-  unsigned int hz_sidetone;
-  unsigned int dah_to_dit_ratio;
-  byte pot_activated;
-  byte length_wordspace;
-  byte autospace_active;
-  unsigned int wpm_farnsworth;
-  byte current_ptt_line;
-  byte current_tx;
-  byte weighting;
-  unsigned int memory_repeat_time;
-  byte dit_buffer_off;
-  byte dah_buffer_off;
-  byte cmos_super_keyer_iambic_b_timing_percent;
-  byte cmos_super_keyer_iambic_b_timing_on;
-  uint8_t ip[4];
-  uint8_t gateway[4];  
-  uint8_t subnet[4]; 
-  uint8_t link_send_ip[4][FEATURE_INTERNET_LINK_MAX_LINKS];
-  uint8_t link_send_enabled[FEATURE_INTERNET_LINK_MAX_LINKS];
-  int link_send_udp_port[FEATURE_INTERNET_LINK_MAX_LINKS];
-  int link_receive_udp_port;
-  uint8_t link_receive_enabled;
-} configuration;
-
+#include "config.h"
+struct config_t configuration;
 
 byte command_mode_disable_tx = 0;
 byte current_tx_key_line = tx_key_line_1;
@@ -669,14 +641,6 @@ unsigned long last_config_write = 0;
   int button_array_low_limit[analog_buttons_number_of_buttons];
   long button_last_add_to_send_buffer_time = 0;
 #endif //FEATURE_COMMAND_BUTTONS
-
-byte pot_wpm_low_value;
-
-#ifdef FEATURE_POTENTIOMETER
-  byte pot_wpm_high_value;
-  byte last_pot_wpm_read;
-  int pot_full_scale_reading = default_pot_full_scale_reading;
-#endif //FEATURE_POTENTIOMETER
 
 #if defined(FEATURE_SERIAL)
   byte incoming_serial_byte;
@@ -798,26 +762,6 @@ byte send_buffer_status = SERIAL_SEND_BUFFER_NORMAL;
   byte dah_counter = 0;
 #endif //FEATURE_DEAD_OP_WATCHDOG
 
-
-#ifdef FEATURE_ROTARY_ENCODER            // Rotary Encoder State Tables
-  #ifdef OPTION_ENCODER_HALF_STEP_MODE      // Use the half-step state table (emits a code at 00 and 11)
-  const unsigned char ttable[6][4] = {
-    {0x3 , 0x2, 0x1,  0x0}, {0x23, 0x0, 0x1, 0x0},
-    {0x13, 0x2, 0x0,  0x0}, {0x3 , 0x5, 0x4, 0x0},
-    {0x3 , 0x3, 0x4, 0x10}, {0x3 , 0x5, 0x3, 0x20}
-  };
-  #else                                      // Use the full-step state table (emits a code at 00 only)
-  const unsigned char ttable[7][4] = {
-    {0x0, 0x2, 0x4,  0x0}, {0x3, 0x0, 0x1, 0x10},
-    {0x3, 0x2, 0x0,  0x0}, {0x3, 0x2, 0x1,  0x0},
-    {0x6, 0x0, 0x4,  0x0}, {0x6, 0x5, 0x0, 0x10},
-    {0x6, 0x5, 0x4,  0x0},
-  };
-  #endif //OPTION_ENCODER_HALF_STEP_MODE 
-  unsigned char state = 0;
-  #define DIR_CCW 0x10                      // CW Encoder Code (do not change)
-  #define DIR_CW 0x20                       // CCW Encoder Code (do not change)
-#endif //FEATURE_ENCODER_SUPPORT
 
 #ifdef FEATURE_USB_KEYBOARD
   unsigned long usb_keyboard_special_mode_start_time = 0;
@@ -3368,86 +3312,6 @@ void debug_capture_dump()
 
 }
 #endif
-
-//-------------------------------------------------------------------------------------------------------
-#ifdef FEATURE_ROTARY_ENCODER
-void check_rotary_encoder(){
-
-  static unsigned long timestamp[5];
-
-  unsigned char pinstate = (digitalRead(rotary_pin2) << 1) | digitalRead(rotary_pin1);
-  state = ttable[state & 0xf][pinstate];
-  unsigned char result = (state & 0x30);
-      
-  if (result) {                                    // If rotary encoder modified  
-    timestamp[0] = timestamp[1];                    // Encoder step timer
-    timestamp[1] = timestamp[2]; 
-    timestamp[2] = timestamp[3]; 
-    timestamp[3] = timestamp[4]; 
-    timestamp[4] = millis();
-    
-    unsigned long elapsed_time = (timestamp[4] - timestamp[0]); // Encoder step time difference for 10's step
- 
-    if (result == DIR_CW) {                      
-      if (elapsed_time < 250) {speed_change(2);} else {speed_change(1);};
-    }
-    if (result == DIR_CCW) {                      
-      if (elapsed_time < 250) {speed_change(-2);} else {speed_change(-1);};
-    }
-    
-  } // if (result)
-
-  
-  
-}
-#endif //FEATURE_ROTARY_ENCODER
-//-------------------------------------------------------------------------------------------------------
-
-#ifdef FEATURE_POTENTIOMETER
-void check_potentiometer()
-{
-  #ifdef DEBUG_LOOP
-  debug_serial_port->println(F("loop: entering check_potentiometer")); 
-  #endif
-    
-  if (configuration.pot_activated || potentiometer_always_on) {
-    byte pot_value_wpm_read = pot_value_wpm();
-    if ((abs(pot_value_wpm_read - last_pot_wpm_read) > potentiometer_change_threshold)) {
-      #ifdef DEBUG_POTENTIOMETER
-        debug_serial_port->print(F("check_potentiometer: speed change: "));
-        debug_serial_port->print(pot_value_wpm_read);
-        debug_serial_port->print(F(" analog read: "));
-        debug_serial_port->println(analogRead(potentiometer));
-      #endif
-      speed_set(pot_value_wpm_read);
-      last_pot_wpm_read = pot_value_wpm_read;
-      #ifdef FEATURE_WINKEY_EMULATION
-        if ((primary_serial_port_mode == SERIAL_WINKEY_EMULATION) && (winkey_host_open)) {
-          winkey_port_write(((pot_value_wpm_read-pot_wpm_low_value)|128));
-          winkey_last_unbuffered_speed_wpm = configuration.wpm;
-        }
-      #endif
-      #ifdef FEATURE_SLEEP
-        last_activity_time = millis(); 
-      #endif //FEATURE_SLEEP
-    }
-  }
-}
-
-#endif
-//-------------------------------------------------------------------------------------------------------
-#ifdef FEATURE_POTENTIOMETER
-byte pot_value_wpm()
-{
-  int pot_read = analogRead(potentiometer);
-  byte return_value = map(pot_read, 0, pot_full_scale_reading, pot_wpm_low_value, pot_wpm_high_value);
-  return return_value;
-
-}
-
-#endif
-
-//-------------------------------------------------------------------------------------------------------
 
 #ifdef FEATURE_HELL
 void hell_test ()
@@ -11206,32 +11070,6 @@ void initialize_keyer_state(){
   switch_to_tx_silent(1);
 
 }  
-
-//--------------------------------------------------------------------- 
-void initialize_potentiometer(){
-
-  #ifdef FEATURE_POTENTIOMETER
-    pinMode(potentiometer,INPUT);
-    pot_wpm_high_value = initial_pot_wpm_high_value;
-    last_pot_wpm_read = pot_value_wpm();
-    configuration.pot_activated = 1;
-  #endif
-  
-}
-  
-//---------------------------------------------------------------------   
-void initialize_rotary_encoder(){  
-  
-  #ifdef FEATURE_ROTARY_ENCODER
-    pinMode(rotary_pin1, INPUT);
-    pinMode(rotary_pin2, INPUT);
-    #ifdef OPTION_ENCODER_ENABLE_PULLUPS
-      digitalWrite(rotary_pin1, HIGH);
-      digitalWrite(rotary_pin2, HIGH);
-    #endif //OPTION_ENCODER_ENABLE_PULLUPS
-  #endif //FEATURE_ROTARY_ENCODER
-  
-}
 
 //---------------------------------------------------------------------   
 

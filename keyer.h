@@ -17,6 +17,7 @@
 #define BEACON 1
 #define KEYER_COMMAND_MODE 2
 
+extern byte keyer_machine_mode;   // KEYER_NORMAL, BEACON, KEYER_COMMAND_MODE
 #define OMIT_LETTERSPACE 1
 
 #define SIDETONE_OFF 0
@@ -29,6 +30,7 @@
 
 #define SPEED_NORMAL 0
 #define SPEED_QRSS 1
+extern byte speed_mode;
 
 #define CW 0
 #define HELL 1
@@ -142,5 +144,124 @@
 
 #define PRINTCHAR 0
 #define NOPRINT 1
+
+extern byte command_mode_disable_tx;
+#ifdef FEATURE_DISPLAY
+  enum lcd_statuses {LCD_CLEAR, LCD_REVERT, LCD_TIMED_MESSAGE, LCD_SCROLL_MSG};
+  #define default_display_msg_delay 1000
+#endif //FEATURE_DISPLAY
+
+extern byte dit_buffer;     // used for buffering paddle hits in iambic operation
+extern byte dah_buffer;     // used for buffering paddle hits in iambic operation
+extern byte button0_buffer;
+extern byte length_letterspace;
+extern byte config_dirty;
+extern byte key_tx;         // 0 = tx_key_line control suppressed
+#ifdef FEATURE_MEMORIES
+  extern byte play_memory_prempt;
+  extern long last_memory_button_buffer_insert;
+  extern byte repeat_memory;
+  extern unsigned long last_memory_repeat_time;
+#endif //FEATURE_MEMORIES
+
+// These are from after I started the reorganization.  I hope to make them disappear eventually
+void lcd_center_print_timed(String lcd_print_string, byte row_number, unsigned int duration);
+void send_dit(byte sending_type);
+void send_dah(byte sending_type);
+void speed_change(int change);
+void switch_to_tx(byte tx);
+long get_cw_input_from_user(unsigned int exit_time_milliseconds);
+
+// These are all from before.  They should mostly disappear quickly
+void initialize_pins(void);
+void initialize_keyer_state(void);
+void initialize_default_modes(void);
+void initialize_watchdog(void);
+void initialize_ethernet_variables(void);
+void check_eeprom_for_initialization(void);
+void check_for_beacon_mode(void);
+void check_for_debug_modes(void);
+void initialize_serial_ports(void);
+void initialize_ps2_keyboard(void);
+void initialize_usb(void);
+void initialize_cw_keyboard(void);
+void initialize_display(void);
+void initialize_ethernet(void);
+void initialize_udp(void);
+void initialize_web_server(void);
+void initialize_debug_startup(void);
+void check_paddles(void);
+void service_dit_dah_buffers(void);
+void service_send_buffer(byte no_print);
+void check_ptt_tail(void);
+void check_ps2_keyboard(void);
+void check_for_dirty_configuration(void);
+void check_memory_repeat(void);
+void loop_element_lengths(float lengths, float additional_time_ms, int speed_wpm_in, byte sending_type);
+byte analogbuttonpressed(void);
+void send_char(byte cw_char, byte omit_letterspace);
+void ps2_usb_keyboard_play_memory(byte memory_number);
+void tx_and_sidetone_key(int state, byte sending_type);
+void ps2_keyboard_program_memory(byte memory_number);
+int ps2_keyboard_get_number_input(byte places, int lower_limit, int upper_limit);
+int convert_cw_number_to_ascii(long number_in);
+int memory_end(byte memory_number);
+int memory_start(byte memory_number);
+byte play_memory(byte memory_number);
+void program_memory(int memory_number);
+
+void write_settings_to_eeprom(int);
+void add_to_send_buffer(byte incoming_serial_byte);
+void sidetone_adj(int freq);
+void adjust_dah_to_dit_ratio(int ratio);
+void speed_set(int speed);
+void clear_send_buffer(void);
+void put_serial_number_in_send_buffer(void);
+void boop_beep(void);
+void beep(void);
+void ptt_unkey(void);
+void ptt_key(void);
+void switch_to_tx_silent(byte tx);
+int uppercase(int c);
+void boop(void);
+void check_dit_paddle(void);
+void check_dah_paddle(void);
+void initialize_eeprom_memories(void);
+int paddle_pin_read(int paddle);
+void analog_button_read(int);
+int analog_button_pressed(void);
+void command_sidetone_freq_adj(void);
+void command_dah_to_dit_ratio_adjust(void);
+void command_tuning_mode(void);
+void command_speed_mode(void);
+void command_set_mem_repeat_delay(void);
+void command_play_memory(int memory_number);
+void beep_boop(void);
+void remove_from_send_buffer(void);
+
+void check_serial(void);
+void check_paddle_echo(void);
+void service_paddle_echo(void);
+void process_serial_command(HardwareSerial *port);
+void serial_set_serial_number(HardwareSerial *port);
+void serial_set_sidetone_freq(HardwareSerial *port);
+void repeat_play_memory(HardwareSerial *port);
+void serial_set_memory_repeat(HardwareSerial *port);
+void serial_play_memory(byte memory);
+void serial_program_memory(HardwareSerial *port);
+void serial_status(HardwareSerial *port);
+void serial_set_dit_to_dah_ratio(HardwareSerial *port);
+void serial_set_weighting(HardwareSerial *port);
+void serial_tune_command(HardwareSerial *port);
+void serial_wpm_set(HardwareSerial *port);
+void serial_switch_tx(HardwareSerial *port);
+void serial_change_wordspace(HardwareSerial *port);
+int serial_get_number_input(byte places, int lower_limit, int upper_limit, HardwareSerial *port);
+void serial_status_memories(HardwareSerial *port);
+
+void service_display(void);
+void lcd_clear(void);
+void clear_display_row(byte row);
+void lcd_center_print_timed_wpm(void);
 
 #endif //keyer_h

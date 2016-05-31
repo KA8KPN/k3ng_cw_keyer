@@ -2,17 +2,17 @@
 // FEATURES add more bytes to the compiled binary, OPTIONS change code behavior
 
 
-// #define FEATURE_COMMAND_BUTTONS
+#define FEATURE_COMMAND_BUTTONS
 // #define FEATURE_COMMAND_LINE_INTERFACE  // Command Line Interface functionality
-// #define FEATURE_MEMORIES             // on the Arduino Due, you must have FEATURE_EEPROM_E24C1024 and E24C1024 EEPROM hardware in order to compile this
-// #define FEATURE_MEMORY_MACROS
+#define FEATURE_MEMORIES             // on the Arduino Due, you must have FEATURE_EEPROM_E24C1024 and E24C1024 EEPROM hardware in order to compile this
+#define FEATURE_MEMORY_MACROS
 // #define FEATURE_WINKEY_EMULATION    // disabling Automatic Software Reset is highly recommended (see documentation) (this no longer requires FEATURE_SERIAL)
 // #define FEATURE_BEACON
 // #define FEATURE_CALLSIGN_RECEIVE_PRACTICE
 // #define FEATURE_POTENTIOMETER         // do not enable unless you have a potentiometer connected, otherwise noise will falsely trigger wpm changes
 // #define FEATURE_SERIAL_HELP
 // #define FEATURE_HELL
-// #define FEATURE_PS2_KEYBOARD        // Use a PS2 keyboard to send code - Change keyboard layout (non-US) in K3NG_PS2Keyboard.h.  Additional options below.
+#define FEATURE_PS2_KEYBOARD        // Use a PS2 keyboard to send code - Change keyboard layout (non-US) in K3NG_PS2Keyboard.h.  Additional options below.
 // #define FEATURE_USB_KEYBOARD          // Use a USB keyboard to send code - Uncomment three lines in k3ng_keyer.ino (search for note_usb_uncomment_lines)
 // #define FEATURE_CW_COMPUTER_KEYBOARD  // Have an Arduino Due or Leonardo act as a USB HID (Human Interface Device) keyboard and use the paddle to "type" characters on the computer
 // #define FEATURE_DEAD_OP_WATCHDOG
@@ -22,7 +22,7 @@
 // #define FEATURE_LCD_4BIT                // classic LCD disidefplay using 4 I/O lines
 // #define FEATURE_LCD_ADAFRUIT_I2C          // Adafruit I2C LCD display using MCP23017 at addr 0x20
 // #define FEATURE_LCD_ADAFRUIT_BACKPACK    // Adafruit I2C LCD Backup using MCP23008 (courtesy Josiah Ritchie, KE0BLL)
-// #define FEATURE_LCD_YDv1                // YourDuino I2C LCD display with old LCM 1602 V1 ic
+#define FEATURE_LCD_YDv1                // YourDuino I2C LCD display with old LCM 1602 V1 ic
 // #define FEATURE_LCD1602_N07DH      // http://linksprite.com/wiki/index.php5?title=16_X_2_LCD_Keypad_Shield_for_Arduino
 // #define FEATURE_LCD_SAINSMART_I2C
 // #define FEATURE_CW_DECODER
@@ -71,7 +71,7 @@
 // #define OPTION_WATCHDOG_TIMER                        // this enables a four second ATmega48/88/168/328 watchdog timer; use for unattended/remote operation only
 // #define OPTION_MOUSE_MOVEMENT_PADDLE               // experimental (just fooling around) - mouse movement will act like a paddle
 // #define OPTION_NON_ENGLISH_EXTENSIONS  // add support for additional CW characters (i.e. À, Å, Þ, etc.)
-// #define OPTION_KEEP_PTT_KEYED_WHEN_CHARS_BUFFERED    // this option keeps PTT high if there are characters buffered from the keyboard, the serial interface, or Winkey
+#define OPTION_KEEP_PTT_KEYED_WHEN_CHARS_BUFFERED    // this option keeps PTT high if there are characters buffered from the keyboard, the serial interface, or Winkey
 // #define OPTION_DISPLAY_NON_ENGLISH_EXTENSIONS  // LCD display suport for non-English (NO/DK/DE) characters - Courtesy of OZ1JHM
 // #define OPTION_UNKNOWN_CHARACTER_ERROR_TONE
 // #define OPTION_DO_NOT_SAY_HI

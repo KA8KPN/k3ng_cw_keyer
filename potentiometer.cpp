@@ -18,6 +18,8 @@ void speed_set(int wpm_set);  // TODO -- put this in a header file
 
 int pot_full_scale_reading = default_pot_full_scale_reading;
 byte pot_wpm_low_value;
+byte pot_wpm_high_value;
+byte last_pot_wpm_read;
 
 //--------------------------------------------------------------------- 
 void initialize_potentiometer(){

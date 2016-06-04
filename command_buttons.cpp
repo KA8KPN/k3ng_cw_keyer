@@ -9,6 +9,8 @@
 #include <Arduino.h>
 
 #include "command_buttons.h"
+#include "potentiometer.h"
+
 #include "keyer_dependencies.h"
 #include "keyer.h"
 #include "keyer_settings.h"

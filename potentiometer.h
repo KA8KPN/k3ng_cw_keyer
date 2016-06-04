@@ -6,8 +6,8 @@ void initialize_potentiometer(void);
 void check_potentiometer(void);
 byte pot_value_wpm(void);
 
-byte pot_wpm_high_value;
-byte last_pot_wpm_read;
+extern byte pot_wpm_high_value;
+extern byte last_pot_wpm_read;
 extern int pot_full_scale_reading;
 extern byte pot_wpm_low_value;
 
@@ -20,4 +20,4 @@ extern byte pot_wpm_low_value;
 
 
 
-#endif // ROTARY_ENCODER_H
+#endif // POTENTIOMETER_H

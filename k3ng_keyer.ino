@@ -423,10 +423,6 @@ New fetures in this stable release:
 #include <stdio.h>
 #include "keyer_hardware.h"
 
-#include "rotary_encoder.h"
-#include "potentiometer.h"
-#include "command_buttons.h"
-
 #ifndef HARDWARE_ARDUINO_DUE
   #include <avr/pgmspace.h>
   #include <avr/wdt.h>
@@ -457,6 +453,10 @@ New fetures in this stable release:
 #ifndef HARDWARE_CUSTOM
   #include "keyer_features_and_options.h"
 #endif
+
+#include "rotary_encoder.h"
+#include "potentiometer.h"
+#include "command_buttons.h"
 
 #ifdef FEATURE_EEPROM_E24C1024
   #include <E24C1024.h>

@@ -18,6 +18,7 @@
 #include "command_buttons.h"
 #include "potentiometer.h"
 #include "display.h"
+#include "rotary_encoder.h"
 
 int button_array_high_limit[analog_buttons_number_of_buttons];
 int button_array_low_limit[analog_buttons_number_of_buttons];
@@ -74,9 +75,7 @@ void command_mode ()
         }
       #endif
       
-      #ifdef FEATURE_ROTARY_ENCODER
-        check_rotary_encoder();
-      #endif //FEATURE_ROTARY_ENCODER    
+        CHECK_ROTARY_ENCODER();
 
       check_paddles();
 

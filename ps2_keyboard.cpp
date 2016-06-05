@@ -12,6 +12,7 @@
 
 #include "ps2_keyboard.h"
 #include "potentiometer.h"
+#include "rotary_encoder.h"
 #include "display.h"
 
 #include "keyer_pin_settings.h"
@@ -954,9 +955,7 @@ int ps2_keyboard_get_number_input(byte places,int lower_limit, int upper_limit)
 
         check_ptt_tail();
 	CHECK_POTENTIOMETER();
-        #ifdef FEATURE_ROTARY_ENCODER
-        check_rotary_encoder();
-        #endif //FEATURE_ROTARY_ENCODER
+        CHECK_ROTARY_ENCODER();
       }
     } else {
       keystroke = keyboard.read();

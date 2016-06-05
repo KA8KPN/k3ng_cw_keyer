@@ -169,6 +169,12 @@ void switch_to_tx(byte tx);
 long get_cw_input_from_user(unsigned int exit_time_milliseconds);
 void repeat_memory_msg(byte memory_number);
 
+#define SIDETONE_HZ_LOW_LIMIT 299
+#define SIDETONE_HZ_HIGH_LIMIT 2001
+
+extern HardwareSerial *primary_serial_port;
+extern byte char_send_mode;
+extern byte qrss_dit_length;
 extern byte pause_sending_buffer;
 extern byte send_buffer_bytes;
 extern byte manual_ptt_invoke;

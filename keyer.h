@@ -167,6 +167,13 @@ void send_dah(byte sending_type);
 void speed_change(int change);
 void switch_to_tx(byte tx);
 long get_cw_input_from_user(unsigned int exit_time_milliseconds);
+void repeat_memory_msg(byte memory_number);
+
+extern byte pause_sending_buffer;
+extern byte send_buffer_bytes;
+extern byte manual_ptt_invoke;
+extern unsigned int serial_number;
+extern byte ptt_line_activated;
 
 // These are all from before.  They should mostly disappear quickly
 void initialize_pins(void);
@@ -178,7 +185,6 @@ void check_eeprom_for_initialization(void);
 void check_for_beacon_mode(void);
 void check_for_debug_modes(void);
 void initialize_serial_ports(void);
-void initialize_ps2_keyboard(void);
 void initialize_usb(void);
 void initialize_cw_keyboard(void);
 void initialize_display(void);
@@ -189,16 +195,12 @@ void initialize_debug_startup(void);
 void check_paddles(void);
 void service_dit_dah_buffers(void);
 void check_ptt_tail(void);
-void check_ps2_keyboard(void);
 void check_for_dirty_configuration(void);
 void check_memory_repeat(void);
 void loop_element_lengths(float lengths, float additional_time_ms, int speed_wpm_in, byte sending_type);
 byte analogbuttonpressed(void);
 void send_char(byte cw_char, byte omit_letterspace);
-void ps2_usb_keyboard_play_memory(byte memory_number);
 void tx_and_sidetone_key(int state, byte sending_type);
-void ps2_keyboard_program_memory(byte memory_number);
-int ps2_keyboard_get_number_input(byte places, int lower_limit, int upper_limit);
 int convert_cw_number_to_ascii(long number_in);
 int memory_end(byte memory_number);
 int memory_start(byte memory_number);

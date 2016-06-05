@@ -861,7 +861,7 @@ void ps2_keyboard_program_memory(byte memory_number)
     lcd_string.concat(' ');
   }
   lcd_string.concat(memory_number+1);
-  lcd_center_print_timed(lcd_string, 0, default_display_msg_delay);
+  LCD_CENTER_PRINT_TIMED(lcd_string, 0, default_display_msg_delay);
   #else
   boop_beep();
   #endif
@@ -885,7 +885,7 @@ void ps2_keyboard_program_memory(byte memory_number)
           temp_memory_index--;
           #ifdef FEATURE_DISPLAY
           keyboard_string = keyboard_string.substring(0,keyboard_string.length()-1);
-          lcd_center_print_timed(keyboard_string, 1, default_display_msg_delay);
+          LCD_CENTER_PRINT_TIMED(keyboard_string, 1, default_display_msg_delay);
           #endif
         }
       } else {
@@ -897,9 +897,9 @@ void ps2_keyboard_program_memory(byte memory_number)
           #ifdef FEATURE_DISPLAY
           keyboard_string.concat(char(keystroke));
           if (keyboard_string.length() > LCD_COLUMNS) {
-            lcd_center_print_timed(keyboard_string.substring((keyboard_string.length()-LCD_COLUMNS)), 1, default_display_msg_delay);
+            LCD_CENTER_PRINT_TIMED(keyboard_string.substring((keyboard_string.length()-LCD_COLUMNS)), 1, default_display_msg_delay);
           } else {         
-            lcd_center_print_timed(keyboard_string, 1, default_display_msg_delay);
+            LCD_CENTER_PRINT_TIMED(keyboard_string, 1, default_display_msg_delay);
           }
           #endif
           temp_memory[temp_memory_index] = keystroke;
@@ -964,7 +964,7 @@ int ps2_keyboard_get_number_input(byte places,int lower_limit, int upper_limit)
         numberindex++;
         #ifdef FEATURE_DISPLAY
         keyboard_string.concat(String(keystroke-48));
-        lcd_center_print_timed(keyboard_string, 1, default_display_msg_delay);
+        LCD_CENTER_PRINT_TIMED(keyboard_string, 1, default_display_msg_delay);
         #endif                     
         if (numberindex > places){
             looping = 0;
@@ -976,7 +976,7 @@ int ps2_keyboard_get_number_input(byte places,int lower_limit, int upper_limit)
             numberindex--;
             #ifdef FEATURE_DISPLAY
             keyboard_string = keyboard_string.substring(0,keyboard_string.length()-1);
-            lcd_center_print_timed(keyboard_string, 1, default_display_msg_delay);
+            LCD_CENTER_PRINT_TIMED(keyboard_string, 1, default_display_msg_delay);
             #endif             
           }
         } else {

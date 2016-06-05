@@ -62,10 +62,8 @@ void command_mode ()
     if (command_mode_active_led) {digitalWrite(command_mode_active_led,HIGH);}
   #endif //command_mode_active_led
 
-  #ifdef FEATURE_DISPLAY
-    lcd_clear();
-    lcd_center_print_timed("Command Mode", 0, default_display_msg_delay);
-  #endif 
+    LCD_CLEAR_DISPLAY();
+    LCD_CENTER_PRINT_TIMED("Command Mode", 0, default_display_msg_delay);
 
   #if defined(FEATURE_WINKEY_EMULATION) && defined(OPTION_WINKEY_SEND_BREAKIN_STATUS_BYTE)
     winkey_breakin_status_byte_inhibit = 1;
@@ -137,18 +135,14 @@ void command_mode ()
           configuration.keyer_mode = IAMBIC_A;
           keyer_mode_before = IAMBIC_A;
           config_dirty = 1;
-          #ifdef FEATURE_DISPLAY
-            lcd_center_print_timed("Iambic A", 0, default_display_msg_delay);
-          #endif
+	  LCD_CENTER_PRINT_TIMED("Iambic A", 0, default_display_msg_delay);
           send_dit(AUTOMATIC_SENDING);
           break; 
         case 2111: // B - Iambic mode
           configuration.keyer_mode = IAMBIC_B;
           keyer_mode_before = IAMBIC_B;
           config_dirty = 1;
-          #ifdef FEATURE_DISPLAY
-            lcd_center_print_timed("Iambic B", 0, default_display_msg_delay);
-          #endif          
+	  LCD_CENTER_PRINT_TIMED("Iambic B", 0, default_display_msg_delay);
           send_dit(AUTOMATIC_SENDING);
           break;
         case 1: // E - announce spEed
@@ -162,9 +156,7 @@ void command_mode ()
           configuration.keyer_mode = ULTIMATIC;
           keyer_mode_before = ULTIMATIC;
           config_dirty = 1;
-          #ifdef FEATURE_DISPLAY
-            lcd_center_print_timed("Ultimatic", 0, default_display_msg_delay);
-          #endif                    
+	  LCD_CENTER_PRINT_TIMED("Ultimatic", 0, default_display_msg_delay);
           send_dit(AUTOMATIC_SENDING);
           break; 
         case 1121: command_sidetone_freq_adj(); break;                    // F - adjust sidetone frequency
@@ -172,22 +164,16 @@ void command_mode ()
           configuration.keyer_mode = BUG;
           keyer_mode_before = BUG;
           config_dirty = 1;
-          #ifdef FEATURE_DISPLAY
-            lcd_center_print_timed("Bug", 0, default_display_msg_delay);
-          #endif          
+	  LCD_CENTER_PRINT_TIMED("Bug", 0, default_display_msg_delay);
           send_dit(AUTOMATIC_SENDING);
           break;  
         case 11:                                                     // I - toggle TX enable / disable
           if (command_mode_disable_tx) {
             command_mode_disable_tx = 0;
-            #ifdef FEATURE_DISPLAY
-              lcd_center_print_timed("TX On", 0, default_display_msg_delay);
-            #endif            
+	    LCD_CENTER_PRINT_TIMED("TX On", 0, default_display_msg_delay);
           } else {
             command_mode_disable_tx = 1;
-            #ifdef FEATURE_DISPLAY
-              lcd_center_print_timed("TX Off", 0, default_display_msg_delay);
-            #endif            
+	    LCD_CENTER_PRINT_TIMED("TX Off", 0, default_display_msg_delay);
           }
           send_dit(AUTOMATIC_SENDING);
           break;
@@ -197,33 +183,25 @@ void command_mode ()
         #endif //FEATURE_MEMORIES  Acknowledgement: LA3ZA fixed!
         case 21: // N - paddle mode toggle
           if (configuration.paddle_mode == PADDLE_NORMAL) {
-            configuration.paddle_mode = PADDLE_REVERSE;
-            #ifdef FEATURE_DISPLAY
-              lcd_center_print_timed("Paddle Reverse", 0, default_display_msg_delay);
-            #endif //FEATURE_DISPLAY
+	      configuration.paddle_mode = PADDLE_REVERSE;
+	      LCD_CENTER_PRINT_TIMED("Paddle Reverse", 0, default_display_msg_delay);
           } else {
-            #ifdef FEATURE_DISPLAY
-              lcd_center_print_timed("Paddle Normal", 0, default_display_msg_delay);
-            #endif //FEATURE_DISPLAY         
-            configuration.paddle_mode = PADDLE_NORMAL;
+              LCD_CENTER_PRINT_TIMED("Paddle Normal", 0, default_display_msg_delay);
+	      configuration.paddle_mode = PADDLE_NORMAL;
           }
           config_dirty = 1;
           send_dit(AUTOMATIC_SENDING);
           break;  
         case 222: // O - toggle sidetone on and off
           if ((configuration.sidetone_mode == SIDETONE_ON) || (configuration.sidetone_mode == SIDETONE_PADDLE_ONLY)) {
-            #ifdef FEATURE_DISPLAY
-              lcd_center_print_timed("Sidetone Off", 0, default_display_msg_delay);
-            #endif 
+              LCD_CENTER_PRINT_TIMED("Sidetone Off", 0, default_display_msg_delay);
             #ifdef DEBUG_COMMAND_MODE
               debug_serial_port->println(F("command_mode: SIDETONE_OFF"));
             #endif
             configuration.sidetone_mode = SIDETONE_OFF;
             //boop();
           } else {
-            #ifdef FEATURE_DISPLAY
-              lcd_center_print_timed("Sidetone On", 0, default_display_msg_delay);
-            #endif 
+              LCD_CENTER_PRINT_TIMED("Sidetone On", 0, default_display_msg_delay);
             #ifdef DEBUG_COMMAND_MODE
               debug_serial_port->println(F("command_mode: SIDETONE_ON"));
             #endif             
@@ -238,14 +216,10 @@ void command_mode ()
           case 1112:  // V - toggle pot active
             if (configuration.pot_activated) {
               configuration.pot_activated = 0; 
-              #ifdef FEATURE_DISPLAY
-                lcd_center_print_timed("Pot Deactivated", 0, default_display_msg_delay);
-              #endif             
+                LCD_CENTER_PRINT_TIMED("Pot Deactivated", 0, default_display_msg_delay);
             } else {
               configuration.pot_activated = 1;
-              #ifdef FEATURE_DISPLAY
-                lcd_center_print_timed("Pot Activated", 0, default_display_msg_delay);
-              #endif 
+                LCD_CENTER_PRINT_TIMED("Pot Activated", 0, default_display_msg_delay);
             }
             config_dirty = 1;
             send_dit(AUTOMATIC_SENDING);
@@ -262,7 +236,7 @@ void command_mode ()
               configuration.autospace_active = 0;
               config_dirty = 1;
               #ifdef FEATURE_DISPLAY
-                lcd_center_print_timed("Autospace Off", 0, default_display_msg_delay);
+                LCD_CENTER_PRINT_TIMED("Autospace Off", 0, default_display_msg_delay);
                 send_dit(AUTOMATIC_SENDING);
               #else
                 send_char('O',KEYER_NORMAL);
@@ -273,7 +247,7 @@ void command_mode ()
               configuration.autospace_active = 1;
               config_dirty = 1;
               #ifdef FEATURE_DISPLAY
-                lcd_center_print_timed("Autospace On", 0, default_display_msg_delay);
+                LCD_CENTER_PRINT_TIMED("Autospace On", 0, default_display_msg_delay);
                 send_dit(AUTOMATIC_SENDING);
               #else            
                 send_char('O',KEYER_NORMAL);
@@ -308,9 +282,7 @@ void command_mode ()
           #endif
           break;                           
         default: // unknown command, send a ?
-          #ifdef FEATURE_DISPLAY
-            lcd_center_print_timed("Unknown command", 0, default_display_msg_delay);          
-          #endif
+            LCD_CENTER_PRINT_TIMED("Unknown command", 0, default_display_msg_delay);
           send_char('?',KEYER_NORMAL); 
           break;                                   
       }
@@ -343,9 +315,7 @@ void command_dah_to_dit_ratio_adjust () {
 
   byte looping = 1;
 
-  #ifdef FEATURE_DISPLAY
-  lcd_center_print_timed("Adj dah to dit", 0, default_display_msg_delay);          
-  #endif
+  LCD_CENTER_PRINT_TIMED("Adj dah to dit", 0, default_display_msg_delay);
 
   while (looping) {
    send_dit(AUTOMATIC_SENDING);
@@ -374,9 +344,7 @@ void command_tuning_mode() {
   byte latched = 0;
   
   
-  #ifdef FEATURE_DISPLAY
-  lcd_center_print_timed("Tune Mode", 0, default_display_msg_delay);          
-  #endif  
+  LCD_CENTER_PRINT_TIMED("Tune Mode", 0, default_display_msg_delay);
   
   send_dit(AUTOMATIC_SENDING);
   key_tx = 1;
@@ -430,16 +398,14 @@ void command_sidetone_freq_adj() {
 
   byte looping = 1;
 
-  #ifdef FEATURE_DISPLAY
-  lcd_center_print_timed("Sidetone " + String(configuration.hz_sidetone) + " Hz", 0, default_display_msg_delay);   
-  #endif
+  LCD_CENTER_PRINT_TIMED("Sidetone " + String(configuration.hz_sidetone) + " Hz", 0, default_display_msg_delay);
 
   while (looping) {
     tone(sidetone_line, configuration.hz_sidetone);
     if (paddle_pin_read(paddle_left) == LOW) {
       #ifdef FEATURE_DISPLAY
       sidetone_adj(5);      
-      lcd_center_print_timed("Sidetone " + String(configuration.hz_sidetone) + " Hz", 0, default_display_msg_delay);        
+      LCD_CENTER_PRINT_TIMED("Sidetone " + String(configuration.hz_sidetone) + " Hz", 0, default_display_msg_delay);
       #else
       sidetone_adj(1);
       #endif
@@ -448,7 +414,7 @@ void command_sidetone_freq_adj() {
     if (paddle_pin_read(paddle_right) == LOW) {
       #ifdef FEATURE_DISPLAY
       sidetone_adj(-5);
-      lcd_center_print_timed("Sidetone " + String(configuration.hz_sidetone) + " Hz", 0, default_display_msg_delay);       
+      LCD_CENTER_PRINT_TIMED("Sidetone " + String(configuration.hz_sidetone) + " Hz", 0, default_display_msg_delay);
       #else
       sidetone_adj(-1);
       #endif
@@ -473,9 +439,7 @@ void command_speed_mode()
   byte looping = 1;
   String wpm_string;
   
-  #ifdef FEATURE_DISPLAY
-  lcd_center_print_timed("Adjust Speed", 0, default_display_msg_delay);        
-  #endif
+  LCD_CENTER_PRINT_TIMED("Adjust Speed", 0, default_display_msg_delay);
   
 
   while (looping) {

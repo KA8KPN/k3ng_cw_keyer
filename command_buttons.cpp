@@ -8,15 +8,16 @@
 #include <stdio.h>
 #include <Arduino.h>
 
-#include "command_buttons.h"
-#include "potentiometer.h"
-
 #include "keyer_dependencies.h"
 #include "keyer.h"
 #include "keyer_settings.h"
 #include "keyer_pin_settings.h"
 
 #include "config.h"
+
+#include "command_buttons.h"
+#include "potentiometer.h"
+#include "display.h"
 
 int button_array_high_limit[analog_buttons_number_of_buttons];
 int button_array_low_limit[analog_buttons_number_of_buttons];

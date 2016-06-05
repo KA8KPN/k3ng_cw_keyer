@@ -146,10 +146,6 @@ extern byte speed_mode;
 #define NOPRINT 1
 
 extern byte command_mode_disable_tx;
-#ifdef FEATURE_DISPLAY
-  enum lcd_statuses {LCD_CLEAR, LCD_REVERT, LCD_TIMED_MESSAGE, LCD_SCROLL_MSG};
-  #define default_display_msg_delay 1000
-#endif //FEATURE_DISPLAY
 
 extern byte dit_buffer;     // used for buffering paddle hits in iambic operation
 extern byte dah_buffer;     // used for buffering paddle hits in iambic operation
@@ -164,8 +160,8 @@ extern byte key_tx;         // 0 = tx_key_line control suppressed
   extern unsigned long last_memory_repeat_time;
 #endif //FEATURE_MEMORIES
 
-// These are from after I started the reorganization.  I hope to make them disappear eventually
-void lcd_center_print_timed(String lcd_print_string, byte row_number, unsigned int duration);
+// These are from after I started the reorganization.  I hope to make some or all of them disappear eventually
+void say_hi(void);
 void send_dit(byte sending_type);
 void send_dah(byte sending_type);
 void speed_change(int change);
@@ -192,7 +188,6 @@ void initialize_web_server(void);
 void initialize_debug_startup(void);
 void check_paddles(void);
 void service_dit_dah_buffers(void);
-void service_send_buffer(byte no_print);
 void check_ptt_tail(void);
 void check_ps2_keyboard(void);
 void check_for_dirty_configuration(void);
@@ -259,9 +254,6 @@ void serial_change_wordspace(HardwareSerial *port);
 int serial_get_number_input(byte places, int lower_limit, int upper_limit, HardwareSerial *port);
 void serial_status_memories(HardwareSerial *port);
 
-void service_display(void);
-void lcd_clear(void);
 void clear_display_row(byte row);
-void lcd_center_print_timed_wpm(void);
 
 #endif //keyer_h

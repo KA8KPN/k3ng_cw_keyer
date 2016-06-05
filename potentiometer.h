@@ -11,11 +11,15 @@ extern byte last_pot_wpm_read;
 extern int pot_full_scale_reading;
 extern byte pot_wpm_low_value;
 
+#define INITIALIZE_POTENTIOMETER() initialize_potentiometer()
+#define CHECK_POTENTIOMETER()      check_potentiometer()
+#define POT_VALUE_WPM()            pot_value_wpm()
+
 
 #else // !FEATURE_POTENTIOMETER
-#define initialize_potentiometer()
-#define check_potentiometer()
-#define pot_value_wpm()
+#define INITIALIZE_POTENTIOMETER()
+#define CHECK_POTENTIOMETER()
+#define POT_VALUE_WPM()
 #endif // !FEATURE_POTENTIOMETER
 
 

@@ -850,7 +850,7 @@ void setup()
   check_for_debug_modes();
   initialize_analog_button_array();
   initialize_serial_ports();
-  initialize_ps2_keyboard();
+  INITIALIZE_PS2_KEYBOARD();
   initialize_usb();
   initialize_cw_keyboard();
   INITIALIZE_DISPLAY();
@@ -904,7 +904,7 @@ void loop()
       service_dit_dah_buffers();
     #endif //FEATURE_SERIAL
 
-    service_send_buffer(PRINTCHAR);
+    SERVICE_SEND_BUFFER(PRINTCHAR);
     check_ptt_tail();
 
     CHECK_POTENTIOMETER();

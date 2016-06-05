@@ -15,6 +15,7 @@
 #include "display.h"
 
 #include "keyer_pin_settings.h"
+#include "keyer_settings.h"
 #include "keyer.h"
 #include "config.h"
 #include <EEPROM.h>
@@ -949,7 +950,7 @@ int ps2_keyboard_get_number_input(byte places,int lower_limit, int upper_limit)
       if (keyer_machine_mode == KEYER_NORMAL) {          // might as well do something while we're waiting
         check_paddles();
         service_dit_dah_buffers();
-        service_send_buffer(PRINTCHAR);
+        SERVICE_SEND_BUFFER(PRINTCHAR);
 
         check_ptt_tail();
 	CHECK_POTENTIOMETER();

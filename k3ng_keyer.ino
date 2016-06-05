@@ -848,7 +848,7 @@ void setup()
   check_eeprom_for_initialization();
   check_for_beacon_mode();
   check_for_debug_modes();
-  initialize_analog_button_array();
+  INITIALIZE_ANALOG_BUTTON_ARRAY();
   initialize_serial_ports();
   INITIALIZE_PS2_KEYBOARD();
   initialize_usb();
@@ -894,7 +894,7 @@ void loop()
   #endif //defined(FEATURE_BEACON) && defined(FEATURE_MEMORIES)
 
   if (keyer_machine_mode == KEYER_NORMAL) {
-    check_command_buttons();
+    CHECK_COMMAND_BUTTONS();
     check_paddles();
     service_dit_dah_buffers();
 
@@ -2878,10 +2878,10 @@ void tx_and_sidetone_key (int state, byte sending_type)
 
       }
       
-      check_the_memory_buttons();
+      CHECK_THE_MEMORY_BUTTONS();
 
       // blow out prematurely if we're automatic sending and a paddle gets hit
-        if (sending_type == AUTOMATIC_SENDING && (paddle_pin_read(paddle_left) == LOW || paddle_pin_read(paddle_right) == LOW || analogbuttonread(0) || dit_buffer || dah_buffer)) {
+        if (sending_type == AUTOMATIC_SENDING && (paddle_pin_read(paddle_left) == LOW || paddle_pin_read(paddle_right) == LOW || ANALOGBUTTONREAD(0) || dit_buffer || dah_buffer)) {
           if (keyer_machine_mode == KEYER_NORMAL) {
             return;
           }
@@ -2997,10 +2997,10 @@ void tx_and_sidetone_key (int state, byte sending_type)
 
       } //while ((millis() < endtime) && (millis() > 200))
       
-      check_the_memory_buttons();
+      CHECK_THE_MEMORY_BUTTONS();
 
       // blow out prematurely if we're automatic sending and a paddle gets hit
-        if (sending_type == AUTOMATIC_SENDING && (paddle_pin_read(paddle_left) == LOW || paddle_pin_read(paddle_right) == LOW || analogbuttonread(0) || dit_buffer || dah_buffer)) {
+        if (sending_type == AUTOMATIC_SENDING && (paddle_pin_read(paddle_left) == LOW || paddle_pin_read(paddle_right) == LOW || ANALOGBUTTONREAD(0) || dit_buffer || dah_buffer)) {
           if (keyer_machine_mode == KEYER_NORMAL) {
             return;
           }
@@ -3102,7 +3102,7 @@ long get_cw_input_from_user(unsigned int exit_time_milliseconds) {
       return 0;
     }
 
-      while (analogbuttonread(0)) {    // hit the button to get out of command mode if no paddle was hit
+      while (ANALOGBUTTONREAD(0)) {    // hit the button to get out of command mode if no paddle was hit
         looping = 0;
         button_hit = 1;
       }
@@ -3575,7 +3575,7 @@ void serial_qrss_mode()
       if (keyer_machine_mode == KEYER_NORMAL) {          // might as well do something while we're waiting
         check_paddles();
         service_dit_dah_buffers();
-        //check_the_memory_buttons();
+        //CHECK_THE_MEMORY_BUTTONS();
       }
     } else {
 
@@ -6402,7 +6402,7 @@ void serial_tune_command (HardwareSerial * port_to_use)
   port_to_use->println("Keying tx - press a key to unkey");
   #ifdef FEATURE_COMMAND_BUTTONS
   // TODO:  Figure out WTF.  This looks like a bug to me.
-  while ((port_to_use->available() == 0) && (!analogbuttonread(0))) {}  // keystroke or button0 hit gets us out of here
+  while ((port_to_use->available() == 0) && (!ANALOGBUTTONREAD(0))) {}  // keystroke or button0 hit gets us out of here
   #endif
   while (port_to_use->available() > 0) {  // clear out the buffer if anything is there
     incoming = port_to_use->read();
@@ -6834,7 +6834,7 @@ void us_callsign_practice(HardwareSerial * port_to_use)
       }
   
       delay(100);
-      while ((paddle_pin_read(paddle_left) == LOW) || (paddle_pin_read(paddle_right) == LOW) || (analogbuttonread(0))) {
+      while ((paddle_pin_read(paddle_left) == LOW) || (paddle_pin_read(paddle_right) == LOW) || (ANALOGBUTTONREAD(0))) {
         loop1 = 0;
         loop2 = 0;
       }
@@ -7237,7 +7237,7 @@ void serial_program_memory(HardwareSerial * port_to_use)
     if (keyer_machine_mode == KEYER_NORMAL) {          // might as well do something while we're waiting
       check_paddles();
       service_dit_dah_buffers();
-      //check_the_memory_buttons();
+      //CHECK_THE_MEMORY_BUTTONS();
     }
   }
   incoming_serial_byte = port_to_use->read();
@@ -7300,10 +7300,10 @@ byte memory_nonblocking_delay(unsigned long delaytime)
 
   while ((millis() - starttime) < delaytime) {
     check_paddles();
-    if (((dit_buffer) || (dah_buffer) || (analogbuttonread(0))) && (keyer_machine_mode != BEACON)) {   // exit if the paddle or button0 was hit
+    if (((dit_buffer) || (dah_buffer) || (ANALOGBUTTONREAD(0))) && (keyer_machine_mode != BEACON)) {   // exit if the paddle or button0 was hit
       dit_buffer = 0;
       dah_buffer = 0;
-      while (analogbuttonread(0)) {}
+      while (ANALOGBUTTONREAD(0)) {}
       return 1;
     }
   }
@@ -7382,7 +7382,7 @@ byte play_memory(byte memory_number)
       
         CHECK_PS2_KEYBOARD();
 
-      check_button0();
+      CHECK_BUTTON0();
 
       SERVICE_DISPLAY();
     }
@@ -7806,7 +7806,7 @@ byte play_memory(byte memory_number)
               dah_buffer = 0;
               button0_buffer = 0;
               repeat_memory = 255;
-                while (analogbuttonread(0)) {}
+                while (ANALOGBUTTONREAD(0)) {}
               return 0;
             }
           #else //FEATURE_STRAIGHT_KEY
@@ -7815,7 +7815,7 @@ byte play_memory(byte memory_number)
               dah_buffer = 0;
               button0_buffer = 0;
               repeat_memory = 255;
-                while (analogbuttonread(0)) {}
+                while (ANALOGBUTTONREAD(0)) {}
               return 0;
             }
           #endif //FEATURE_STRAIGHT_KEY
@@ -7926,9 +7926,9 @@ void program_memory(int memory_number)
   dah_buffer = 0;
   
   #if !defined(FEATURE_STRAIGHT_KEY)
-    while ((paddle_pin_read(paddle_left) == HIGH) && (paddle_pin_read(paddle_right) == HIGH) && (!analogbuttonread(0))) { }  // loop until user starts sending or hits the button
+    while ((paddle_pin_read(paddle_left) == HIGH) && (paddle_pin_read(paddle_right) == HIGH) && (!ANALOGBUTTONREAD(0))) { }  // loop until user starts sending or hits the button
   #else 
-    while ((paddle_pin_read(paddle_left) == HIGH) && (paddle_pin_read(paddle_right) == HIGH) && (!analogbuttonread(0)) && (digitalRead(pin_straight_key) == HIGH)) { }  // loop until user starts sending or hits the button
+    while ((paddle_pin_read(paddle_left) == HIGH) && (paddle_pin_read(paddle_right) == HIGH) && (!ANALOGBUTTONREAD(0)) && (digitalRead(pin_straight_key) == HIGH)) { }  // loop until user starts sending or hits the button
   #endif
 
   while (loop2) {
@@ -8000,7 +8000,7 @@ void program_memory(int memory_number)
          }       
        #endif //FEATURE_MEMORY_MACROS
 
-         while (analogbuttonread(0)) {    // hit the button to get out of command mode if no paddle was hit
+         while (ANALOGBUTTONREAD(0)) {    // hit the button to get out of command mode if no paddle was hit
            loop1 = 0;
            loop2 = 0;
          }
@@ -8667,7 +8667,7 @@ void initialize_serial_ports(){
   
     #if defined(FEATURE_WINKEY_EMULATION) && defined(FEATURE_COMMAND_LINE_INTERFACE) //--------------------------------------------
     
-        if (analogbuttonread(0)) {
+        if (ANALOGBUTTONREAD(0)) {
           #ifdef OPTION_PRIMARY_SERIAL_PORT_DEFAULT_WINKEY_EMULATION
             primary_serial_port_mode = SERIAL_CLI;
             primary_serial_port_baud_rate = PRIMARY_SERIAL_PORT_BAUD;
@@ -8684,7 +8684,7 @@ void initialize_serial_ports(){
             primary_serial_port_baud_rate = PRIMARY_SERIAL_PORT_BAUD;
           #endif  //ifndef OPTION_PRIMARY_SERIAL_PORT_DEFAULT_WINKEY_EMULATION
         }
-        while (analogbuttonread(0)) {}
+        while (ANALOGBUTTONREAD(0)) {}
     #endif //defined(FEATURE_WINKEY_EMULATION) && defined(FEATURE_COMMAND_LINE_INTERFACE)---------------------------------
 
     #if !defined(FEATURE_WINKEY_EMULATION) && defined(FEATURE_COMMAND_LINE_INTERFACE)

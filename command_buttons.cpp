@@ -24,6 +24,15 @@ int button_array_high_limit[analog_buttons_number_of_buttons];
 int button_array_low_limit[analog_buttons_number_of_buttons];
 long button_last_add_to_send_buffer_time = 0;
 
+#if defined(FEATURE_MEMORIES)
+void command_program_memory(void);
+#endif // FEATURE_MEMORIES
+
+#ifdef FEATURE_DL2SBA_BANKSWITCH
+void setOneButton(int button, int index);
+#endif //  !FEATURE_DL2SBA_BANKSWITCH
+
+
 void command_mode ()
 {
 
@@ -836,7 +845,6 @@ void check_the_memory_buttons()
 
 
 //---------------------------------------------------------------------
-
 void command_program_memory()
 {
   int cw_char;

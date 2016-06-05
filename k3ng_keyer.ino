@@ -841,7 +841,7 @@ void setup()
   initialize_pins();
   initialize_keyer_state();
   INITIALIZE_POTENTIOMETER();
-  initialize_rotary_encoder();
+  INITIALIZE_ROTARY_ENCODER();
   initialize_default_modes();
   initialize_watchdog();
   initialize_ethernet_variables();
@@ -909,11 +909,9 @@ void loop()
 
     CHECK_POTENTIOMETER();
     
-    #ifdef FEATURE_ROTARY_ENCODER
-      check_rotary_encoder();
-    #endif //FEATURE_ROTARY_ENCODER
+    CHECK_ROTARY_ENCODER();
 
-      CHECK_PS2_KEYBOARD();
+    CHECK_PS2_KEYBOARD();
 
     #if defined(FEATURE_USB_KEYBOARD) || defined(FEATURE_USB_MOUSE)
       service_usb();
@@ -2826,9 +2824,7 @@ void tx_and_sidetone_key (int state, byte sending_type)
         wdt_reset();
       #endif  //OPTION_WATCHDOG_TIMER
       
-      #ifdef FEATURE_ROTARY_ENCODER
-        check_rotary_encoder();
-      #endif //FEATURE_ROTARY_ENCODER    
+        CHECK_ROTARY_ENCODER();
       
       #if defined(FEATURE_USB_KEYBOARD) || defined(FEATURE_USB_MOUSE)
         service_usb();
@@ -2947,9 +2943,7 @@ void tx_and_sidetone_key (int state, byte sending_type)
         wdt_reset();
       #endif  //OPTION_WATCHDOG_TIMER
       
-      #ifdef FEATURE_ROTARY_ENCODER
-        check_rotary_encoder();
-      #endif //FEATURE_ROTARY_ENCODER    
+        CHECK_ROTARY_ENCODER();
       
       #ifdef FEATURE_USB_KEYBOARD
         service_usb();
@@ -3079,9 +3073,7 @@ long get_cw_input_from_user(unsigned int exit_time_milliseconds) {
   while (looping) {
       CHECK_POTENTIOMETER();
     
-    #ifdef FEATURE_ROTARY_ENCODER
-      check_rotary_encoder();
-    #endif //FEATURE_ROTARY_ENCODER    
+      CHECK_ROTARY_ENCODER();
 
     check_paddles();
 
@@ -6236,9 +6228,7 @@ int serial_get_number_input(byte places,int lower_limit, int upper_limit,Hardwar
         check_ptt_tail();
 	CHECK_POTENTIOMETER();
         
-        #ifdef FEATURE_ROTARY_ENCODER
-        check_rotary_encoder();
-        #endif //FEATURE_ROTARY_ENCODER        
+        CHECK_ROTARY_ENCODER();
       }
     } else {
       incoming_serial_byte = port_to_use->read();
@@ -7388,9 +7378,7 @@ byte play_memory(byte memory_number)
     if (keyer_machine_mode == KEYER_NORMAL) {
         CHECK_POTENTIOMETER();
       
-      #ifdef FEATURE_ROTARY_ENCODER
-        check_rotary_encoder();
-      #endif //FEATURE_ROTARY_ENCODER      
+        CHECK_ROTARY_ENCODER();
       
         CHECK_PS2_KEYBOARD();
 

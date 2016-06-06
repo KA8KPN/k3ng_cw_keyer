@@ -434,27 +434,8 @@ New fetures in this stable release:
   #define noTone noToneDUE
 #endif //HARDWARE_ARDUINO_DUE
 
-#ifdef HARDWARE_NANOKEYER_REV_B
-  #include "keyer_features_and_options_nanokeyer_rev_b.h"
-#endif
+#include "keyer_features_and_options.h"
 
-#ifdef HARDWARE_NANOKEYER_REV_D
-  #include "keyer_features_and_options_nanokeyer_rev_d.h"
-#endif
-
-#ifdef HARDWARE_OPEN_INTERFACE
-  #include "keyer_features_and_options_open_interface.h"
-#endif
-
-#ifdef HARDWARE_TEST
-  #include "keyer_features_and_options_test.h"
-#endif    
-
-#ifndef HARDWARE_CUSTOM
-  #include "keyer_features_and_options.h"
-#endif
-
-#include "keyer_dependencies.h"
 #include "keyer_debug.h"
 
 #include "rotary_encoder.h"

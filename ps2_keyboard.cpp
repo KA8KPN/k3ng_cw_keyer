@@ -1,9 +1,4 @@
-// TODO:  Put this in a file that everybody can include
-#ifndef HARDWARE_CUSTOM
-  #include "keyer_features_and_options.h"
-#endif
-
-#include "keyer_dependencies.h"
+#include "keyer_features_and_options.h"
 
 #ifdef FEATURE_PS2_KEYBOARD
 

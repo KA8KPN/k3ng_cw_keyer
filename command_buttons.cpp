@@ -1,14 +1,10 @@
-// TODO:  Put this in a file that everybody can include
-#ifndef HARDWARE_CUSTOM
-  #include "keyer_features_and_options.h"
-#endif
+#include "keyer_features_and_options.h"
 
 #ifdef FEATURE_COMMAND_BUTTONS
 
 #include <stdio.h>
 #include <Arduino.h>
 
-#include "keyer_dependencies.h"
 #include "keyer.h"
 #include "keyer_settings.h"
 #include "keyer_pin_settings.h"
